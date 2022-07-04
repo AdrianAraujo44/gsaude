@@ -21,15 +21,17 @@ const ListMedicine = () => {
   const [situation] = useState(route.params?.situation);
   const [errorMessange, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(true)
+  const [medicineId, setMedicineId] = useState()
   const [availableQuantity, setAvailableQuantity] = useState(0);
   const [data, setData] = useState([])
   const modalizeRef = useRef(null);
   const { user } = useContext(AuthContext);
 
-  const openUpdateMedicineModal = (name, availableQuantity) => {
-     modalizeRef.current?.open()
+  const openUpdateMedicineModal = (name, availableQuantity, medicineId) => {
      setName(name)
      setAvailableQuantity(availableQuantity)
+     setMedicineId(medicineId)
+    modalizeRef.current?.open()
   };
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const ListMedicine = () => {
     getData()
   },[situation, search])
 
+
   return (
     <Container>
       <Header title={"Lista de remédios"} />
@@ -74,8 +77,13 @@ const ListMedicine = () => {
         renderItem={({item}) => {return <MedicineItem data={item} openModal={openUpdateMedicineModal} />}}
         keyExtractor={(item, index) => { return index.toString()}}
         showsVerticalScrollIndicator={false}
-     /> 
-      <UpdateMedicineModal modalizeRef={modalizeRef} name={name} availableQuantity={availableQuantity} />
+      /> 
+      <UpdateMedicineModal 
+        modalizeRef={modalizeRef} 
+        name={name} 
+        availableQuantity={availableQuantity} 
+        medicineId={medicineId}
+      />
     </Container>
   )
 }

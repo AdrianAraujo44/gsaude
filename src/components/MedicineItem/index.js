@@ -50,7 +50,7 @@ const MedicineItem = ({ data, openModal }) => {
         </Buttons>
         {
           user.healthCenterId != undefined && (
-            <Buttons activeOpacity={0.7} onPress={() => openModal(name, amountAvailable)}>
+            <Buttons activeOpacity={0.7} onPress={() => openModal(name, amountAvailable, data.medicine._id)}>
               <Ionicons name="create" size={30} color={"#767373"}/>
               <Text>Editar</Text>
             </Buttons>
