@@ -37,7 +37,7 @@ const Dashboard = () => {
     const [coming, setComing] = useState(0);
 
     const goToListMedicine = () => {
-        navigation.navigate("ListMedicine",{medicine:""})
+        navigation.navigate("ListMedicine",{situation:"all"})
     }
 
     const searchFilterFunction = (text) => {

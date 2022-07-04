@@ -226,6 +226,13 @@ const Routes = () => {
               headerShown:false
             }}
           />
+          <Stack.Screen 
+            name="PDFView"
+            component={PDFView}
+            options={{
+              title:'Bula'
+            }}
+          />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
