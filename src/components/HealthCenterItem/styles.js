@@ -31,7 +31,6 @@ export const BoxLine = styled.View`
 export const Text = styled.Text`
   color: #000;
   font-size: 16px;
-  width: 90%;
   font-weight: bold;
 `
 
