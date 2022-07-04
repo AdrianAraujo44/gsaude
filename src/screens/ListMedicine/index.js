@@ -20,6 +20,7 @@ const ListMedicine = () => {
   const [search] = useState(route.params?.medicine)
   const [situation] = useState(route.params?.situation);
   const [errorMessange, setErrorMessage] = useState('')
+  const [loading, setLoading] = useState(true)
   const [availableQuantity, setAvailableQuantity] = useState(0);
   const [data, setData] = useState([])
   const modalizeRef = useRef(null);
@@ -42,8 +43,9 @@ const ListMedicine = () => {
         if(situation != undefined) {
           const response = await api.post(`/healthCenter/listMedicines/${user.healthCenterId}`,{type:situation})
           setData(response.data)
-          setErrorMessage(`Ǹão existe remédios cadastrados \n para essa categoria!`)
+          setErrorMessage(`Não existe remédios cadastrados \n para essa categoria!`)
         }
+        setLoading(false)
       }catch(err) {
         console.log(err)
       }
@@ -56,7 +58,7 @@ const ListMedicine = () => {
     <Container>
       <Header title={"Lista de remédios"} />
       {
-        data.length == 0 && (
+        (data.length == 0 && loading == false) && (
           <EmptySearch>
             <MaterialCommunityIcons
               name="exclamation-thick"
