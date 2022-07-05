@@ -10,6 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import api from '../../services/api';
 import Toast from 'react-native-toast-message'
+import Geolocation from '@react-native-community/geolocation';
 
 import {
     BoxSearch,
@@ -23,6 +24,8 @@ const ListHealthCenter = () => {
     const [searchPhrase, setSearchPhrase] = useState(route.params.healthCenter);
     const [dataSource, setDataSource] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const [userLongitude, setUserLongitude] = useState(0);
+    const [userLatitude, setUserLatitude] = useState(0);
 
     const renderItem = ({item, index}) => {
         return <ListItem data={item}/>
@@ -30,12 +33,15 @@ const ListHealthCenter = () => {
 
     const fakeData = jsonData.filter(x => x.name.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, "")))
     
+
     const getHealthCenterList = async () => {
-        try {
-          const response = await api.get(`/listHealthCenter/${searchPhrase.trim()}`);
-          console.log(response.data);
-          //setDataSource(response.data);
+        const formattedSearchPhrase = searchPhrase.trim().replace(/\s/g, "%20");
+        try { 
+            const formattedSearchPhrase = searchPhrase.trim().replace(/\s/g, "%20");
+            const response = await api.post(`/healthCenter/listHealthCenter/${formattedSearchPhrase}`, { latitude: String(userLatitude), longitude: String(userLongitude) });
+            setDataSource(response.data);
         } catch(error) {
+            console.log(error.message);
           Toast.show({
             type: 'error',
             text1: 'Temos um problema!',
@@ -62,6 +68,20 @@ const ListHealthCenter = () => {
 
     useEffect(() => {
         getHealthCenterList();
+
+        Geolocation.getCurrentPosition(
+            //Will give you the current location
+            (position) => {
+              //getting the Longitude from the location json
+              setUserLongitude(JSON.stringify(position.coords.longitude));
+           
+              //getting the Latitude from the location json
+              setUserLatitude(JSON.stringify(position.coords.latitude));
+                
+             }, (error) => alert(error.message), { 
+               enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 
+             }
+          );
     },[]); 
 
     return (
@@ -90,7 +110,7 @@ const ListHealthCenter = () => {
                     )}
                     <ListContainer> 
                         <FlatList
-                            data={fakeData}
+                            data={dataSource}
                             renderItem={renderItem}
                             keyExtractor={(item, index) => {return index.toString()}}
                             ListEmptyComponent={handleEmpty}

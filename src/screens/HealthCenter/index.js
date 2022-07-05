@@ -3,7 +3,7 @@ import { Feather, Ionicons } from '@expo/vector-icons'
 import { Dimensions, ActivityIndicator } from 'react-native'
 import Minimap from '../../components/Minimap/index'
 import MedicineItem from '../../components/MedicineItem'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import api from '../../services/api'
 
 import {
@@ -23,9 +23,11 @@ const { width } = Dimensions.get('screen')
 
 const HealthCenter = () => {
   const navigation = useNavigation()
+  const route = useRoute();
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [medicines, setMedicines] = useState([])
+  const [healthCenterId, setHealthCenterId] = useState(String(route.params.healthCenterId));
   
   const capitalizeFirst = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -33,7 +35,7 @@ const HealthCenter = () => {
 
   const getHealthCenterData = async () => {
     try {
-      const response = await api.get('/healthCenter/629a4ae1139e68861edfa7d6');
+      const response = await api.get(`/healthCenter/${healthCenterId}`);
       setData(response.data);
       setMedicines(response.data.medicines);
     } catch(error) {
