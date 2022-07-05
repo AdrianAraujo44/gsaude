@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons"
 import ListItem from '../../components/ListItem';
@@ -8,6 +8,8 @@ import { FlatList } from "react-native";
 import jsonData from './fakeHealthCenterData.json';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import api from '../../services/api';
+import Toast from 'react-native-toast-message'
 
 import {
     BoxSearch,
@@ -19,13 +21,31 @@ const ListHealthCenter = () => {
     const route = useRoute()
     const navigation = useNavigation()
     const [searchPhrase, setSearchPhrase] = useState(route.params.healthCenter);
-    const [clicked, setClicked] = useState(true);
+    const [dataSource, setDataSource] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
     const renderItem = ({item, index}) => {
         return <ListItem data={item}/>
     };
 
     const fakeData = jsonData.filter(x => x.name.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, "")))
+    
+    const getHealthCenterList = async () => {
+        try {
+          const response = await api.get(`/listHealthCenter/${searchPhrase.trim()}`);
+          console.log(response.data);
+          //setDataSource(response.data);
+        } catch(error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Temos um problema!',
+            text2: 'Algo de errado aconteceu, tente novamente mais tarde'
+          });
+          
+        } finally {
+          setLoading(false);
+        }
+    }; 
 
     const handleEmpty = () => {
         return (
@@ -39,6 +59,10 @@ const ListHealthCenter = () => {
             </EmptySearch>
         ); 
     }; 
+
+    useEffect(() => {
+        getHealthCenterList();
+    },[]); 
 
     return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
