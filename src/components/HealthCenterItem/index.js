@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import Badge from '../Badget'
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message'
+import api from '../../services/api'
+import { AuthContext } from '../../providers/user/context'
 
 import {
   Container,
@@ -34,6 +36,28 @@ function chooseBadge (situation, availableQuantity, date) {
 const HealthCenterItem = ({data}) => {
   const navigation = useNavigation()
   const [color, setColor] = useState('#A8A79D')
+  const { user } = useContext(AuthContext)
+
+  const submitNotification = async() => {
+    try{
+      console.log(user)
+      const response = await api.post("/user/addNotification", {
+        userId: user._id,
+        medicine_id: data.medicine,
+        healthCenter_id: data._id
+      })
+      console.log(response.data)
+      if(response.data.type == 'sucesso') {
+        Toast.show({
+          type: 'success',
+          text1: 'Alerta criado!',
+          text2: 'quando o remédio ficar disponível você será avisado'
+        });
+      }
+    }catch(err) {
+      console.log(err)
+    }
+  }
 
   return (
     <Container>
@@ -48,12 +72,11 @@ const HealthCenterItem = ({data}) => {
               <AlertButton 
                 activeOpacity={0.7} 
                 onPress={() => {
-                  Toast.show({
-                    type: 'success',
-                    text1: 'Alerta criado!',
-                    text2: 'quando o remédio ficar disponível você será avisado'
-                  });
-                  setColor('#FF0000')
+                  if(color != "#FF0000") {
+                    submitNotification()
+                    setColor('#FF0000')
+                  }
+                  
                 }}>
                 <Ionicons name="notifications" size={30} color={color}  />
               </AlertButton>

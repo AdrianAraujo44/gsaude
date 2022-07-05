@@ -80,7 +80,7 @@ const NotificationsModal = ({ modalizeRef }) => {
               <Text>{healthCenter.name}</Text>
               <MapButton 
                 activeOpacity={0.7} 
-                onPress={() => navigation.navigate('Fullmap',{latitude:healthCenter.latitude, longitude:healthCenter.longitude})}>
+                onPress={() => navigation.navigate('Fullmap',{latitude:parseFloat(healthCenter.latitude), longitude:parseFloat(healthCenter.longitude)})}>
                 <Ionicons name="location-sharp" size={30} color="#FF0000" />
               </MapButton>
             </Item>

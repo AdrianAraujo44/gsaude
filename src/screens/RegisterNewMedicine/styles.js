@@ -9,7 +9,7 @@ export const HeaderContainer = styled.View`
 export const Container = styled.View`
   flex: 1;
   justify-content: flex-start;
-  margin-top: 70px;
+  margin-top: 30px;
 `
 
 export const NewMedicineTextInput = styled.TextInput`
