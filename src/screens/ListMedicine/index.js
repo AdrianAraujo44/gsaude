@@ -5,6 +5,7 @@ import { FlatList } from "react-native";
 import mockData from './mockData.json';
 import { useRoute } from '@react-navigation/native';
 import UpdateMedicineModal from '../../components/Modals/UpdateMedicineModal';
+import { AuthContext } from '../../providers/user/context'
 import {
   Container
 } from './styles'
@@ -17,6 +18,7 @@ const ListMedicine = () => {
   const [situation, setSituation] = useState(route.params?.situation);
   const [availableQuantity, setAvailableQuantity] = useState(0);
   const [filteredDataSource, setFilteredDataSource] = useState(route.params?.filteredDataSource);
+  
 
   const modalizeRef = useRef(null);
 
@@ -25,6 +27,10 @@ const ListMedicine = () => {
      setName(name)
      setAvailableQuantity(availableQuantity)
   };
+
+  const closeUpdateMedicineModal = () => {
+    modalizeRef.current?.close()
+  }
 
   const filterSituationFunction = (situation, medicine) => {
     if (situation) {
@@ -55,7 +61,7 @@ const ListMedicine = () => {
         keyExtractor={(item, index) => { return index.toString()}}
      /> 
 
-      <UpdateMedicineModal modalizeRef={modalizeRef} name={name} availableQuantity={availableQuantity} />
+      <UpdateMedicineModal modalizeRef={modalizeRef} name={name} availableQuantity={availableQuantity} closeModal={closeUpdateMedicineModal}/>
     </Container>
   )
 }

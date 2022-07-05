@@ -9,7 +9,7 @@ import {
 } from './styles'
 import { AntDesign } from '@expo/vector-icons';
 
-const CounterCopy = ({availableQuantity}) => {
+const CounterCopy = ({availableQuantity, setAmount}) => {
     const [quantity, setQuantity] = useState("0");
 
     useEffect(() => {
@@ -18,16 +18,18 @@ const CounterCopy = ({availableQuantity}) => {
 
     const increaseQuantity = () => {
         setQuantity(Number(quantity) + 1);
+        setAmount(Number(quantity) + 1);
     }
 
     const decreaseQuantity = () => {
         if(Number(quantity) > 0) {
             setQuantity(Number(quantity) - 1);
+            setAmount(Number(quantity) - 1);
         }
     }
 
     const handleChange = (inputText) => {
-        setQuantity(inputText.toString())
+        setQuantity(inputText.toString());
     }
 
 
