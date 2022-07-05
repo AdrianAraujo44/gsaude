@@ -15,7 +15,7 @@ import {
 const SearchHealthCenterItem = ({data}) => {
   const navigation = useNavigation()
   return (
-    <Container>
+    <Container  onPress={() => navigation.navigate("HealthCenter", {healthCenterId: data._id})}>
       <Item>
         <Box>
           <Text>{data.name}</Text>

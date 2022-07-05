@@ -15,7 +15,6 @@ export const Item = styled.View`
   border-color: #E3DFDF;
   border-bottom-width: 1px;
   padding-bottom: 10px ;
-  /* background-color: red; */
 `
 
 export const Box = styled.View`
