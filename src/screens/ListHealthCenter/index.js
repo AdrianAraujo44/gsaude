@@ -30,10 +30,7 @@ const ListHealthCenter = () => {
     const renderItem = ({item, index}) => {
         return <ListItem data={item}/>
     };
-
-    const fakeData = jsonData.filter(x => x.name.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, "")))
     
-
     const getHealthCenterList = async () => {
         const formattedSearchPhrase = searchPhrase.trim().replace(/\s/g, "%20");
         try { 
@@ -41,7 +38,6 @@ const ListHealthCenter = () => {
             const response = await api.post(`/healthCenter/listHealthCenter/${formattedSearchPhrase}`, { latitude: String(userLatitude), longitude: String(userLongitude) });
             setDataSource(response.data);
         } catch(error) {
-            console.log(error.message);
           Toast.show({
             type: 'error',
             text1: 'Temos um problema!',
