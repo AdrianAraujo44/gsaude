@@ -40,13 +40,11 @@ const HealthCenterItem = ({data}) => {
 
   const submitNotification = async() => {
     try{
-      console.log(user)
       const response = await api.post("/user/addNotification", {
         userId: user._id,
         medicine_id: data.medicine,
         healthCenter_id: data._id
       })
-      console.log(response.data)
       if(response.data.type == 'sucesso') {
         Toast.show({
           type: 'success',
@@ -72,8 +70,16 @@ const HealthCenterItem = ({data}) => {
               <AlertButton 
                 activeOpacity={0.7} 
                 onPress={() => {
-                  if(color != "#FF0000") {
+                  if(user.isLoading != false) {
                     submitNotification()
+                  }else {
+                    Toast.show({
+                      type: 'error',
+                      text1: 'Temos um problema!',
+                      text2: 'Você precisa estar logado para criar uma notificação',
+                    });
+                  }
+                  if(color != "#FF0000") {
                     setColor('#FF0000')
                   }
                   

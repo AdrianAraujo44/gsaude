@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react'
+import React, { useState, useRef, useContext, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
 import DefaultButton from '../../components/DefaultButton'
@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import Toast from 'react-native-toast-message'
 import NotificationsModal from '../../components/Modals/NotificationsModal'
 import { AuthContext } from '../../providers/user/context'
-
+import api from '../../services/api'
 import {
   Container,
   Overlay,
@@ -27,10 +27,21 @@ import {
 const Home = () => {
   const [selectInput, setSelectInput] = useState('')
   const [searchState, setSearchState] = useState('')
+  const [notifications, setNotifications] = useState(0)
   const modalizeRef = useRef(null)
   const navigation = useNavigation()
   const selectOptions = ["Estou procurando um remédio", "Estou procurando um posto de saúde"]
   const { user, signOut } = useContext(AuthContext)
+
+  const getNotifications = async() => {
+    try {
+      const response = await api.get(`/user/getNotifications/${user._id}`)
+      setNotifications(response.data.notifications.length)
+      
+    }catch(err) {
+      return err
+    }
+  }
 
   const handleSubmit = () => {
     if(selectInput == 'medicine' && searchState.trim() != '') {
@@ -56,6 +67,12 @@ const Home = () => {
     });
   }
 
+  useEffect(() => {
+    if(user.isLoading != false) {
+      getNotifications()
+    }
+  },[user])
+
   return (
     <>
       <Container>
@@ -65,7 +82,7 @@ const Home = () => {
               <Box>
                 <NotificationButton activeOpacity={0.7} onPress={onOpen} >
                   <Badge>
-                    <Text fs={"10px"}>{user.notifications.length}</Text>
+                    <Text fs={"10px"}>{notifications}</Text>
                   </Badge>
                   <Ionicons name="notifications" size={30} color="#fff"/>
                 </NotificationButton>
