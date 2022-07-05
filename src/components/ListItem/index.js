@@ -8,13 +8,17 @@ const ListItem = ({data}) => {
     const { name, distance } = data
     const navigation = useNavigation()
 
+    const capitalizeFirst = str => {
+     return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+
     const goToHealthCenter = () => {
         navigation.navigate("HealthCenter", {healthCenterId: data.id})
     }
 
     return (
         <Container onPress={goToHealthCenter}>  
-            <ListTitle>{name}</ListTitle>
+            <ListTitle>{capitalizeFirst(name)}</ListTitle>
             <ListDistance>{parseFloat(distance.toFixed(2))} km </ListDistance>
             <LocationButton>
                 <Entypo
