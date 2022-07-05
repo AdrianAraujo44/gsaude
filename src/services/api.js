@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: 'https://gsaudeapp.herokuapp.com/api'
+  baseURL: 'http://{ip_local}:{porta}/api'
   // baseURL: 'https://gsaudeapp.herokuapp.com/api'
 })
 

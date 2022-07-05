@@ -6,7 +6,7 @@ import DefaultButton from '../../DefaultButton';
 import CounterCopy from '../../CounterCopy';
 import { AuthContext } from '../../../providers/user/context';
 import Toast from 'react-native-toast-message';
-
+import api from '../../../services/api';
 import {
   Title,
   Container,
@@ -35,10 +35,11 @@ const UpdateMedicineModal = ({ modalizeRef,  name, availableQuantity, closeModal
         if(amount > 0) {
             try {
                 const medicine = await api.get(`/medicine/${name}`)
+                console.log(medicine.data);
                 if(medicine.data.type == "success") {
-                    await api.post('/healthCenter/addMedicine', {
-                        medicine: medicine.data.data._id,
-                        amountAvailable: amount,
+                    await api.put('/healthCenter/updateAmountMedicine', {
+                        medicineId: medicine.data.data._id,
+                        amount: amount,
                         healthCenterId: user.healthCenterId
                     })
                     Toast.show({
@@ -53,6 +54,7 @@ const UpdateMedicineModal = ({ modalizeRef,  name, availableQuantity, closeModal
                 }
 
             }catch(err) {
+              console.log(err.message);
                 Toast.show({
                     type: 'error',
                     text1: 'Temos um problema !',

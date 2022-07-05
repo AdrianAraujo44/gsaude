@@ -33,11 +33,11 @@ const Dashboard = () => {
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [missing, setMissing] = useState(0);
-    const [available, setAvailable] = useState(0);
+    const [available, setAvailable] = useState([]);
     const [coming, setComing] = useState(0);
 
     const goToListMedicine = () => {
-        navigation.navigate("ListMedicine",{medicine:""})
+        navigation.navigate("ListMedicine",{medicine:"", healthCenterId:user.healthCenterId})
     }
 
     const searchFilterFunction = (text) => {
@@ -47,7 +47,7 @@ const Dashboard = () => {
     };
 
     const searchFilterMedicine = () => {
-        navigation.navigate("ListMedicine",{medicine:search})
+        navigation.navigate("ListMedicine",{medicine:search, healthCenterId:user.healthCenterId})
     }
     
     const getAmountMedicines = async () => {
@@ -65,10 +65,9 @@ const Dashboard = () => {
           setLoading(false);
         }
     };
-    
+
     useEffect(() => {
         getAmountMedicines();
-
         if (isLoading === false ) {
             if(data.data) {
                 setMissing(data.data.missing);
@@ -76,7 +75,7 @@ const Dashboard = () => {
                 setComing(data.data.coming);
             }
         }
-      },[isLoading]); 
+    },[isLoading]); 
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

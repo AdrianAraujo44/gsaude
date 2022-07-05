@@ -32,7 +32,7 @@ function chooseBadge (situation, availableQuantity, date) {
 
 const MedicineItem = ({ data, openModal }) => {
   const {amountAvailable, situation } = data
-  const {name} = data.medicine || data
+  const {name} = data || data.medicine
   const date = "20/05/22"
   const navigation = useNavigation()
   const { user } = useContext(AuthContext)
