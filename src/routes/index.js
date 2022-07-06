@@ -9,7 +9,7 @@ import Signup from '../screens/Signup'
 import Otp from '../screens/Signup/otp'
 import Register from '../screens/Signup/register'
 import Fullmap from '../screens/Fullmap'
-import NewMedicine from '../screens/NewMedicine'
+// import NewMedicine from '../screens/NewMedicine'
 import Dashboard from '../screens/Dashboard'
 import SearchMedicine from '../screens/SearchMedicine'
 import ListMedicine from '../screens/ListMedicine'
@@ -206,13 +206,13 @@ const Routes = () => {
               headerShown:false
             }}
           />
-          <Stack.Screen 
+          {/* <Stack.Screen 
             name="NewMedicine"
             component={NewMedicine}
             options={{
               headerShown:false
             }}
-          />
+          /> */}
           <Stack.Screen 
             name="RegisterNewMedicine"
             component={RegisterNewMedicine}
