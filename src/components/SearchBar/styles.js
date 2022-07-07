@@ -1,51 +1,25 @@
-import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
 
-
-export const Button = styled.TouchableOpacity`
-  display: flex;
-  justify-content: flex-end;
+export const Container = styled.View`
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 `
 
-const styles = StyleSheet.create({
-    container:{
-        margin: 15,
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "row",
-        width: "90%",
-    },
-    searchBar__unclicked: {
-        padding: 10,
-        flexDirection: "row",
-        width: "95%",
-        backgroundColor: "#d9dbda",
-        borderRadius: 15,
-        alignItems: "center",
-    },
-    searchBar__clicked: {
-        padding: 10,
-        flexDirection: "row",
-        width: "80%",
-        backgroundColor: "#d9dbda",
-        borderRadius: 15,
-        alignItems: "center",
-        justifyContent: "space-evenly",
-    },
-    input: {
-        fontSize: 16,
-        marginLeft: 10,
-        width: "90%",
-    },
-    cancelText: {
-        color:"red",
-        fontSize: 20,
-        textAlign: "right"
-    },
-    buttonView:{
-        marginLeft:10,
-        width: 65,
-    },
-});
+export const SearchBarView = styled.View`
+    padding: 5px;
+    flexDirection: row;
+    background-color: #F5F0F0;
+    border-radius: 5px;
+    height: 45px;
+    align-items: center;
+    justify-content: space-evenly;
+`
 
-export default styles;
+export const SearchInput = styled.TextInput`
+    font-size: 17px;
+    margin-left: 10px;
+    width: 90%;
+    color: #929090;
+    font-weight: bold;
+`

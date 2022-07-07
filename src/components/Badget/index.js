@@ -9,7 +9,7 @@ const Badge = ({name, type}) => {
   switch(type) {
     case "available":
       return (
-        <Container backgroundColor={'#E0FFEE'} borderColor={'#00B954'} width={'140px'}>
+        <Container backgroundColor={'#E0FFEE'} borderColor={'#00B954'} width={'150px'}>
           <Text color={'#00B954'}>{name}</Text>
         </Container>
       )

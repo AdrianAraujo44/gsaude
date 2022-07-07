@@ -1,27 +1,22 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { AntDesign } from '@expo/vector-icons';
+
 import {
   Container,
   QuantityTextInput,
   IncreaseButton,
   DecreaseButton,
-  Text
 } from './styles'
-import { AntDesign } from '@expo/vector-icons';
 
-const CounterCopy = ({availableQuantity}) => {
-    const [quantity, setQuantity] = useState("0");
 
-    useEffect(() => {
-        setQuantity(availableQuantity)
-      }, [availableQuantity]);
+const Counter = ({ quantity, setQuantity }) => {
 
     const increaseQuantity = () => {
         setQuantity(Number(quantity) + 1);
     }
 
     const decreaseQuantity = () => {
-        if(Number(quantity) > 0) {
+        if(quantity > 0) {
             setQuantity(Number(quantity) - 1);
         }
     }
@@ -30,12 +25,9 @@ const CounterCopy = ({availableQuantity}) => {
         setQuantity(inputText.toString())
     }
 
-
     return (
         <Container>
-            <DecreaseButton
-                onPress={() => {decreaseQuantity()}}
-            >
+            <DecreaseButton onPress={() => {decreaseQuantity()}} >
                 <AntDesign name="minuscircle" size={40} color="#42B448"/>
             </DecreaseButton>
             <QuantityTextInput keyboardType='numeric' onChangeText={handleChange} value={String(quantity)}/>
@@ -46,4 +38,4 @@ const CounterCopy = ({availableQuantity}) => {
     )
 }
 
-export default CounterCopy
+export default Counter

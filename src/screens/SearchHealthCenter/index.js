@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard } from 'react-native'
+import { Keyboard, PermissionsAndroid, Platform, TouchableWithoutFeedback } from 'react-native'
 import { MaterialIcons, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRoute, useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
-import HealthCenterItem from '../../components/HealthCenterItem';
+import SearchHealthCenterItem from '../../components/SearchHealthCenterItem';
+import Geolocation from '@react-native-community/geolocation';
 
 import {
   Container,
@@ -15,27 +16,37 @@ import {
   ResultText,
   EmptySearch,
   EmptySearchText,
-  FlatList,
-  TouchableWithoutFeedback
+  FlatList
 } from './styles'
 
-const SearchMedicine = () => {
+const SearchHealthCenter = () => {
   const route = useRoute()
   const navigation = useNavigation()
-  const [search, setSearch] = useState(route.params?.medicine)
+  const [search, setSearch] = useState(route.params?.healthCenter)
   const [searchFinal, setSearchFinal] = useState('')
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const getMedicines = async () => {
+  const getMedicines = async (latitude, longitude) => {
     try {
-      const response = await api.get(`/medicine/${search}`)
-      if (response.data.data != undefined) {
-        setData(response.data.data.inventory)
-        setSearchFinal(search)
+      if ((latitude != undefined) && (longitude != undefined)) {
+        const response = await api.post(`/healthCenter/listHealthCenter/${search}`, { latitude, longitude })
+        if (response.data != undefined) {
+          setData(response.data)
+          setSearchFinal(search)
+        } else {
+          setData([])
+        }
       } else {
-        setData([])
+        const response = await api.post(`/healthCenter/listHealthCenter/${search}`)
+        if (response.data != undefined) {
+          setData(response.data)
+          setSearchFinal(search)
+        } else {
+          setData([])
+        }
       }
+
       setLoading(false)
     } catch (err) {
       console.log(err)
@@ -43,7 +54,20 @@ const SearchMedicine = () => {
   }
 
   useEffect(() => {
-    getMedicines()
+
+    Platform.OS === 'android' &&
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+        .then((info) => {
+          if (info == 'granted') {
+            Geolocation.getCurrentPosition(item => {
+              getMedicines(item.coords.latitude, item.coords.longitude)
+            })
+          } else {
+            getMedicines()
+          }
+        })
+
   }, [])
 
   return (
@@ -53,9 +77,10 @@ const SearchMedicine = () => {
           <BackButton activeOpacity={0.7} onPress={() => navigation.goBack()}>
             <MaterialIcons name="arrow-back" size={30} color="black" />
           </BackButton>
+
           <BoxSearch>
             <Input
-              placeholder="Pesquisar novo remédio"
+              placeholder="Pesquisar novo posto"
               defaultValue={search}
               onChangeText={(text) => setSearch(text)}
               onSubmitEditing={() => getMedicines(search)}
@@ -87,10 +112,10 @@ const SearchMedicine = () => {
       <FlatList
         data={data}
         keyExtrator={(item) => item._id}
-        renderItem={({ item }) => <HealthCenterItem data={item} />}
+        renderItem={({ item }) => <SearchHealthCenterItem data={item} />}
       />
     </Container>
   )
 }
 
-export default SearchMedicine
+export default SearchHealthCenter

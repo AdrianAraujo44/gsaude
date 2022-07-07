@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Feather, Ionicons } from '@expo/vector-icons'
-import { Dimensions } from 'react-native'
+import { Dimensions, ActivityIndicator } from 'react-native'
 import Minimap from '../../components/Minimap/index'
 import MedicineItem from '../../components/MedicineItem'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import api from '../../services/api'
 
 import {
   Container,
@@ -22,67 +23,69 @@ const { width } = Dimensions.get('screen')
 
 const HealthCenter = () => {
   const navigation = useNavigation()
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [medicines, setMedicines] = useState([])
+  const route = useRoute()
 
-  const medicines = [
-    {
-      name:'Paracetamol',
-      availableQuantity:50 , 
-      medicineLeaflet: '', 
-      situation: "available", 
-      date: ''
-    },
-    {
-      name:'Dipirona',
-      availableQuantity:0, 
-      medicineLeaflet: '', 
-      situation: "coming", 
-      date: '27/07/2022'
-    },
-    {
-      name:'Ibuprofeno',
-      availableQuantity:0 , 
-      medicineLeaflet: '', 
-      situation: "missing",
-      date: ''
+  
+  const capitalizeFirst = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const getHealthCenterData = async () => {
+    try {
+      const response = await api.get(`/healthCenter/${route.params?.healthCenterId}`);
+      setData(response.data);
+      setMedicines(response.data.medicines);
+    } catch(error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-  ]
+  };
 
+  useEffect(() => {
+    getHealthCenterData();
+  },[route.params?.healthCenterId]); 
+    
   return (
     <Container>
       <Image 
-        source={{uri:'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fdiariodonordeste.verdesmares.com.br%2Fpolopoly_fs%2F1.1482114!%2Fimage%2Fimage.jpg&f=1&nofb=1'}}
+        source={{uri:data.image}}
         resizeMode="cover"
       >
         <BackButton onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" size={30} color={"#fff"} />
         </BackButton>
       </Image>
+      { isLoading ?  <ActivityIndicator/> : 
       <Body>
-        <Title>Posto de saúde Dr. Pompeu Vasconcelos</Title>
+        <Title>{capitalizeFirst(data.name)}</Title>
         <Info>
           <Item>
             <Ionicons name="location-outline" size={25} color={"#00B954"} />
-            <Text>Posto de saúde Dr. Pompeu Vasconcelos</Text>
+            <Text>{capitalizeFirst(data.address)}</Text>
           </Item>
           <Item>
             <Feather name="phone" size={25} color={"#00B954"} />
-            <Text>(85) 99999-9999</Text>
+            <Text>{data.phone}</Text>
           </Item>
           <Item>
             <Feather name="clock" size={25} color={"#00B954"} />
-            <Text>Aberto 07:00 - 17:00</Text>
+            <Text>Aberto {data.hour}</Text>
           </Item>
         </Info>
         <StyleMinimap width={width}>
-          <Minimap data={{latitude:-3.763863448357797, longitude:-38.5743898087103}}/>
+          <Minimap data={{latitude: parseFloat(data.latitude), longitude: parseFloat(data.longitude)}}/>
         </StyleMinimap>
         <Section>Lista de remédios</Section>
-        {
+        { 
           medicines.map((element, index) => (
             <MedicineItem key={index} data={element}/>
-          ))
+          )) 
         }
-      </Body>
+      </Body> }
     </Container>
   )
 }

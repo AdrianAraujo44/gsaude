@@ -1,5 +1,4 @@
 import React from 'react'
-import { View } from 'react-native'
 import DefaultButton from '../../components/DefaultButton'
 import { useNavigation } from '@react-navigation/native';
 

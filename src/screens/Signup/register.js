@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import DefaultButton from '../../components/DefaultButton'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons'
 import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/core'
 import Toast from 'react-native-toast-message'
+import { AuthContext } from '../../providers/user/context'
 
 import {
   Container,
@@ -18,7 +19,6 @@ import {
   PassButton,
   InputPassword
 } from './styles'
-import api from '../../services/api';
 
 const Register = () => {
   const navigation = useNavigation()
@@ -31,6 +31,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
   const route = useRoute()
 
+  const { signUp } = useContext(AuthContext)
 
   const getDate = (event, selectedDate) => {
     const currentDate = selectedDate || date
@@ -51,34 +52,7 @@ const Register = () => {
         });
       }else {
         if(password.trim().length >= 5) {
-          try {
-            const response = await api.post('/user/newUser', { 
-              email: route.params?.email,
-              password,
-              name: fullname,
-              dateOfBirth: text,
-              cpf
-            })
-            if(response.data != null) {
-              navigation.navigate("Login")
-              Toast.show({
-                type: 'success',
-                text1: 'Usuário cadastrado com sucesso!',
-              });
-            }else {
-              Toast.show({
-                type: 'error',
-                text1: 'Temos um problema!',
-                text2: 'Algo de errado aconteceu, tente novamente mais tarde'
-              });
-            }
-          }catch(err) {
-            Toast.show({
-              type: 'error',
-              text1: 'Temos um problema!',
-              text2: 'Algo de errado aconteceu, tente novamente mais tarde'
-            });
-          }
+          signUp(route.params?.email, password, fullname, text,cpf)
         }else {
           Toast.show({
             type: 'error',

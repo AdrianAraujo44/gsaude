@@ -24,6 +24,13 @@ export const Overlay = styled.View`
   padding:20px;
 `
 
+export const Box = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-self: flex-start;
+`
+
 export const NotificationButton = styled.TouchableOpacity`
   display: flex;
   align-self: flex-start;
@@ -34,6 +41,19 @@ export const NotificationButton = styled.TouchableOpacity`
   width: 40px;
   height: 40px;
   border-radius: 19px;
+`
+
+export const ExitButton = styled.TouchableOpacity`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  padding: 0px 0px 0px 4px;
+  background-color: #AAA4A4;
+  width: 40px;
+  height: 40px;
+  border-radius: 19px;
+  margin-left: 5px;
 `
 
 export const Badge = styled.View`
@@ -63,7 +83,7 @@ export const Wrapper = styled.View`
   align-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 35px;
 `
 
 export const Logo = styled.Image`
