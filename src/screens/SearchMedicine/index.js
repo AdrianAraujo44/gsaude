@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Keyboard } from 'react-native'
 import { MaterialIcons, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRoute, useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
@@ -15,7 +15,8 @@ import {
   ResultText,
   EmptySearch,
   EmptySearchText,
-  FlatList
+  FlatList,
+  TouchableWithoutFeedback
 } from './styles'
 
 const SearchMedicine = () => {
@@ -26,17 +27,17 @@ const SearchMedicine = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const getMedicines = async() => {
-    try{
+  const getMedicines = async () => {
+    try {
       const response = await api.get(`/medicine/${search}`)
-      if(response.data.data != undefined) {
+      if (response.data.data != undefined) {
         setData(response.data.data.inventory)
         setSearchFinal(search)
-      }else {
+      } else {
         setData([])
       }
       setLoading(false)
-    }catch(err) {
+    } catch (err) {
       console.log(err)
     }
   }
@@ -46,13 +47,12 @@ const SearchMedicine = () => {
   }, [])
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Container>
+    <Container>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Header>
           <BackButton activeOpacity={0.7} onPress={() => navigation.goBack()}>
-            <MaterialIcons name="arrow-back" size={30} color="black"/>
+            <MaterialIcons name="arrow-back" size={30} color="black" />
           </BackButton>
-
           <BoxSearch>
             <Input
               placeholder="Pesquisar novo remédio"
@@ -65,31 +65,31 @@ const SearchMedicine = () => {
             </BoxIcon>
           </BoxSearch>
         </Header>
+      </TouchableWithoutFeedback>
 
-        {
-          (data.length == 0 && loading == false) ? ( 
-            <EmptySearch>
-              <MaterialCommunityIcons
-                name="exclamation-thick"
-                size={50}
-                color="#9C9C9C"
-              />
-              <EmptySearchText>Não foram encontrados resultados {'\n'} para sua pesquisa.</EmptySearchText>
-            </EmptySearch>
-          ) : (
-            <ResultText>
-              Resultados para {searchFinal}
-            </ResultText>
-          )
-        }
+      {
+        (data.length == 0 && loading == false) ? (
+          <EmptySearch>
+            <MaterialCommunityIcons
+              name="exclamation-thick"
+              size={50}
+              color="#9C9C9C"
+            />
+            <EmptySearchText>Não foram encontrados resultados {'\n'} para sua pesquisa.</EmptySearchText>
+          </EmptySearch>
+        ) : (
+          <ResultText>
+            Resultados para {searchFinal}
+          </ResultText>
+        )
+      }
 
-        <FlatList
-          data={data}
-          keyExtrator={(item) => item._id}
-          renderItem={({ item }) => <HealthCenterItem data={ item }/>}
-        />
-      </Container>
-    </TouchableWithoutFeedback>
+      <FlatList
+        data={data}
+        keyExtrator={(item) => item._id}
+        renderItem={({ item }) => <HealthCenterItem data={item} />}
+      />
+    </Container>
   )
 }
 

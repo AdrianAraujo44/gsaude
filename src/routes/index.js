@@ -9,11 +9,9 @@ import Signup from '../screens/Signup'
 import Otp from '../screens/Signup/otp'
 import Register from '../screens/Signup/register'
 import Fullmap from '../screens/Fullmap'
-// import NewMedicine from '../screens/NewMedicine'
 import Dashboard from '../screens/Dashboard'
 import SearchMedicine from '../screens/SearchMedicine'
 import ListMedicine from '../screens/ListMedicine'
-// import ListHealthCenter from '../screens/ListHealthCenter'
 import PDFView from '../screens/PDFView'
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -206,13 +204,6 @@ const Routes = () => {
               headerShown:false
             }}
           />
-          {/* <Stack.Screen 
-            name="NewMedicine"
-            component={NewMedicine}
-            options={{
-              headerShown:false
-            }}
-          /> */}
           <Stack.Screen 
             name="RegisterNewMedicine"
             component={RegisterNewMedicine}
@@ -315,13 +306,6 @@ const Routes = () => {
             headerShown:false
           }}
         />
-        {/* <Stack.Screen
-          name="ListHealthCenter"
-          component={ListHealthCenter}
-          options={{
-            headerShown: false
-          }}
-        /> */}
         <Stack.Screen
           name="SearchHealthCenter"
           component={SearchHealthCenter}

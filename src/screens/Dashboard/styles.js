@@ -44,8 +44,7 @@ export const Box = styled.View`
     border-left-color: #00B954;
     width: 100%;
     border-radius: 5px;
-    /* padding-horizontal: 10px; */
-    /* padding-vertical: 5px; */
+    z-index: 100;
     display: flex;
     justify-content: center;
     padding-left: 10px;

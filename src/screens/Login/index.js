@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import DefaultButton from '../../components/DefaultButton'
 import { useNavigation } from '@react-navigation/native';
-// import Toast from 'react-native-toast-message';
 import { AuthContext } from '../../providers/user/context'
 import {
   Container,
@@ -19,19 +18,6 @@ const Login = () => {
 
   const navigation = useNavigation()
   const { signIn } = useContext(AuthContext)
-
-  // const handleSubmit = () => {
-  //   if(emailState.trim() != '' && passwordState.trim() != '') {
-  //     navigation.navigate("Home")
-
-  //   }else {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Temos um problema !',
-  //       text2: 'Você deve preencher todos os campos'
-  //     });
-  //   }
-  // }
 
   return (
     <Container>

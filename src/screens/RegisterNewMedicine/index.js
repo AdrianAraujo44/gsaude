@@ -21,7 +21,7 @@ const RegisterNewMedicine = () => {
 
     const handlerSubmit = async() => {
         if(medicineName.trim() != '') {
-            if(amount > 0) {
+            if(amount > 0 && Number.isInteger(amount)) {
                 try {
                     const medicine = await api.get(`/medicine/${medicineName}`)
                     if(medicine.data.type == "success") {

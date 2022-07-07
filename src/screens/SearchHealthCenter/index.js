@@ -19,7 +19,7 @@ import {
   FlatList
 } from './styles'
 
-const SearchHealthCenter= () => {
+const SearchHealthCenter = () => {
   const route = useRoute()
   const navigation = useNavigation()
   const [search, setSearch] = useState(route.params?.healthCenter)
@@ -27,55 +27,55 @@ const SearchHealthCenter= () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const getMedicines = async(latitude, longitude) => {
-    try{
-      if((latitude != undefined) && (longitude != undefined)) {
-        const response = await api.post(`/healthCenter/listHealthCenter/${search}`,{latitude,longitude})
-        if(response.data != undefined) {
+  const getMedicines = async (latitude, longitude) => {
+    try {
+      if ((latitude != undefined) && (longitude != undefined)) {
+        const response = await api.post(`/healthCenter/listHealthCenter/${search}`, { latitude, longitude })
+        if (response.data != undefined) {
           setData(response.data)
           setSearchFinal(search)
-        }else {
+        } else {
           setData([])
         }
-      }else {
+      } else {
         const response = await api.post(`/healthCenter/listHealthCenter/${search}`)
-        if(response.data != undefined) {
+        if (response.data != undefined) {
           setData(response.data)
           setSearchFinal(search)
-        }else {
+        } else {
           setData([])
         }
       }
-      
+
       setLoading(false)
-    }catch(err) {
+    } catch (err) {
       console.log(err)
     }
   }
 
   useEffect(() => {
-    
+
     Platform.OS === 'android' &&
       PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-          .then((info) => {
-            if(info == 'granted') {
-              Geolocation.getCurrentPosition(item => {
-                getMedicines(item.coords.latitude, item.coords.longitude)
-              })
-            }else {
-              getMedicines()
-            }
-          })
+        .then((info) => {
+          if (info == 'granted') {
+            Geolocation.getCurrentPosition(item => {
+              getMedicines(item.coords.latitude, item.coords.longitude)
+            })
+          } else {
+            getMedicines()
+          }
+        })
 
   }, [])
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Container>
+    <Container>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Header>
           <BackButton activeOpacity={0.7} onPress={() => navigation.goBack()}>
-            <MaterialIcons name="arrow-back" size={30} color="black"/>
+            <MaterialIcons name="arrow-back" size={30} color="black" />
           </BackButton>
 
           <BoxSearch>
@@ -90,31 +90,31 @@ const SearchHealthCenter= () => {
             </BoxIcon>
           </BoxSearch>
         </Header>
+      </TouchableWithoutFeedback>
 
-        {
-          (data.length == 0 && loading == false) ? ( 
-            <EmptySearch>
-              <MaterialCommunityIcons
-                name="exclamation-thick"
-                size={50}
-                color="#9C9C9C"
-              />
-              <EmptySearchText>Não foram encontrados resultados {'\n'} para sua pesquisa.</EmptySearchText>
-            </EmptySearch>
-          ) : (
-            <ResultText>
-              Resultados para {searchFinal}
-            </ResultText>
-          )
-        }
+      {
+        (data.length == 0 && loading == false) ? (
+          <EmptySearch>
+            <MaterialCommunityIcons
+              name="exclamation-thick"
+              size={50}
+              color="#9C9C9C"
+            />
+            <EmptySearchText>Não foram encontrados resultados {'\n'} para sua pesquisa.</EmptySearchText>
+          </EmptySearch>
+        ) : (
+          <ResultText>
+            Resultados para {searchFinal}
+          </ResultText>
+        )
+      }
 
-        <FlatList
-          data={data}
-          keyExtrator={(item) => item._id}
-          renderItem={({ item }) => <SearchHealthCenterItem data={ item }/>}
-        />
-      </Container>
-    </TouchableWithoutFeedback>
+      <FlatList
+        data={data}
+        keyExtrator={(item) => item._id}
+        renderItem={({ item }) => <SearchHealthCenterItem data={item} />}
+      />
+    </Container>
   )
 }
 
