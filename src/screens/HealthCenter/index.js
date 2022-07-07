@@ -65,7 +65,7 @@ const HealthCenter = () => {
         <Info>
           <Item>
             <Ionicons name="location-outline" size={25} color={"#00B954"} />
-            <Text>{capitalizeFirst(data.name)}</Text>
+            <Text>{capitalizeFirst(data.address)}</Text>
           </Item>
           <Item>
             <Feather name="phone" size={25} color={"#00B954"} />
