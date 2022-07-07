@@ -1,4 +1,7 @@
-<center><img src="./src/assets/logo.png"/></center>
+<p align="center">
+  <img src="./src/assets/logo.png"/>
+</p>
+
 <br>
 O aplicativo se propõe a resolver um problema que muitos pacientes do SUS enfrentam, que é a
 falta de informações sobre a disponibilidade dos remédios que são fornecidos gratuitamente.
@@ -35,7 +38,9 @@ Conecte seu celular ou emulador em seu computador ou notebook e tenha certeza qu
 
 ```npm i ```<br>
 ```npm run android ```
+<br><br>
 
+### 🔎 Observações
 A aplicação foi criada com intuito de simular ao máximo possível como funcionaria em um ambiente real, por questão de desempenho o banco de dados de remedios do Gsaude é limitado até o momento em 10 remédios na qual simula a base de dados dos medicamentos oferecidos gratuitamente pelo SUS. O funcionário de cada posto só terá possibilidade de relatar e cadastrar a disponibilidade desses 10 medicamentos: 
 
 - Torsilax
