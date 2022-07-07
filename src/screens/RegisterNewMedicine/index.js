@@ -19,9 +19,21 @@ const RegisterNewMedicine = () => {
     const [amount, setAmount] = useState(0)
     const { user } = useContext(AuthContext)
 
+    function isFloat(value) {
+        if (
+          typeof value === 'number' &&
+          !Number.isNaN(value) &&
+          !Number.isInteger(value)
+        ) {
+          return true;
+        }
+      
+        return false;
+      }
+
     const handlerSubmit = async() => {
         if(medicineName.trim() != '') {
-            if(amount > 0 && Number.isInteger(amount)) {
+            if(amount > 0 && !isFloat(amount)) {
                 try {
                     const medicine = await api.get(`/medicine/${medicineName}`)
                     if(medicine.data.type == "success") {
